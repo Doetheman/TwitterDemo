@@ -7,10 +7,10 @@
 //
 
 #import "APIManager.h"
-
+#import "Tweet.h"
 static NSString * const baseURLString = @"https://api.twitter.com";
-static NSString * const consumerKey = // Enter your consumer key here
-static NSString * const consumerSecret = // Enter your consumer secret here
+static NSString * const consumerKey =  @"nxREFxdvnVdjgnax9r8ox4XlM"; // Enter your consumer key here
+static NSString * const consumerSecret =@"EqZZIHrRTFHrxQExBXu05jpV518YeiLCReMqWezY1r3CIuUq9c";// Enter your consumer secret here
 
 @interface APIManager()
 
@@ -32,6 +32,7 @@ static NSString * const consumerSecret = // Enter your consumer secret here
     NSURL *baseURL = [NSURL URLWithString:baseURLString];
     NSString *key = consumerKey;
     NSString *secret = consumerSecret;
+
     // Check for launch arguments override
     if ([[NSUserDefaults standardUserDefaults] stringForKey:@"consumer-key"]) {
         key = [[NSUserDefaults standardUserDefaults] stringForKey:@"consumer-key"];
@@ -46,6 +47,17 @@ static NSString * const consumerSecret = // Enter your consumer secret here
     }
     return self;
 }
+- (void)postStatusWithText:(NSString *)text completion:(void (^)(Tweet *tweet, NSError *error))completion{
+    NSString *urlString = @"1.1/statuses/update.json";
+    NSDictionary *parameters = @{@"status": text};
+    
+    [self POST:urlString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSDictionary *  _Nullable tweetDictionary) {
+        Tweet *tweet = [[Tweet alloc]initWithDictionary:tweetDictionary];
+        completion(tweet, nil);
+    } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+        completion(nil, error);
+    }];
+}
 
 - (void)getHomeTimelineWithCompletion:(void(^)(NSArray *tweets, NSError *error))completion {
     
@@ -53,23 +65,29 @@ static NSString * const consumerSecret = // Enter your consumer secret here
    parameters:nil progress:nil success:^(NSURLSessionDataTask * _Nonnull task, NSArray *  _Nullable tweetDictionaries) {
        
        // Manually cache the tweets. If the request fails, restore from cache if possible.
-       NSData *data = [NSKeyedArchiver archivedDataWithRootObject:tweetDictionaries];
-       [[NSUserDefaults standardUserDefaults] setValue:data forKey:@"hometimeline_tweets"];
-
-       completion(tweetDictionaries, nil);
-       
-   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
-       
-       NSArray *tweetDictionaries = nil;
-       
-       // Fetch tweets from cache if possible
-       NSData *data = [[NSUserDefaults standardUserDefaults] valueForKey:@"hometimeline_tweets"];
-       if (data != nil) {
-           tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
-       }
-       
-       completion(tweetDictionaries, error);
-   }];
+//       NSData *data = [NSKeyedArchiver archivedDataWithRootObject:tweetDictionaries];
+//       [[NSUserDefaults standardUserDefaults] setValue:data forKey:@"hometimeline_tweets"];
+//
+//       completion(tweetDictionaries, nil);
+       //Create a Get Request
+       NSMutableArray *tweets = [Tweet tweetsWithArray:tweetDictionaries];
+       completion(tweets, nil);
+   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error)
+    {
+        completion(nil,error);
+    }];
+//   } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
+//
+//       NSArray *tweetDictionaries = nil;
+//
+//       // Fetch tweets from cache if possible
+//       NSData *data = [[NSUserDefaults standardUserDefaults] valueForKey:@"hometimeline_tweets"];
+//       if (data != nil) {
+//           tweetDictionaries = [NSKeyedUnarchiver unarchiveObjectWithData:data];
+//       }
+//
+//       completion(tweetDictionaries, error);
+//   }];
 }
 
 @end
