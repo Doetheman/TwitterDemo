@@ -11,6 +11,8 @@
 #import "TimelineViewController.h"
 #import "APIManager.h"
 #import <UIIMageView+AFNetworking.h>
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 
 @interface TimelineViewController ()  <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
 
@@ -26,9 +28,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.tweetsArray = [NSMutableArray array];
-    self.tableView.rowHeight = 100;
-    
-    
+   
     //Pull down refresh tweets
     [self fetchTweets];
     self.refreshControl = [[UIRefreshControl alloc] init];
@@ -36,6 +36,7 @@
     
     [self.tableView addSubview:self.refreshControl];
     // Get timeline
+    self.tableView.rowHeight = UITableViewAutomaticDimension;
     
 
 }
@@ -57,6 +58,7 @@
         }
         
     }];
+    [self.refreshControl endRefreshing];
     [self.tableView reloadData];
     
     
@@ -89,16 +91,26 @@
     NSLog(@"%@", [NSString stringWithFormat:@"there are this many tweets %lu", self.tweetsArray.count]);
         return self.tweetsArray.count;
 }
+//checks if tweet was successful
 - (void)didTweet:(Tweet *)tweet {
     [[APIManager shared]postStatusWithText:@"This is my tweet 😀" completion:^(Tweet *tweet, NSError *error) {
         if(error){
             NSLog(@"Error composing Tweet: %@", error.localizedDescription);
         }
         else{
-            [self.delegate didTweet:tweet];
+        
             NSLog(@"Compose Tweet Success!");
         }
     }];
 }
+- (IBAction)logOut:(id)sender {
+    AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
+    
+    UIStoryboard *storyBoard = [UIStoryboard storyboardWithName:@"Main" bundle:nil];
+    LoginViewController *loginViewController = [storyBoard instantiateViewControllerWithIdentifier:@"LoginViewController"];
+    appDelegate.window.rootViewController = loginViewController;
+    [[APIManager shared] logout];
+}
+
 @end
     

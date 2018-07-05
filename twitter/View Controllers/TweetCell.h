@@ -11,7 +11,6 @@
 @interface TweetCell : UITableViewCell
 
 @property (weak, nonatomic) IBOutlet UIImageView *cellImage;
-@property (weak, nonatomic) IBOutlet UIView *CellView;
 
 @property (weak, nonatomic) IBOutlet UILabel *screenName;
 
@@ -23,10 +22,9 @@
 @property (weak, nonatomic) IBOutlet UILabel *tweetTextLabelCell;
 @property (weak, nonatomic) IBOutlet UILabel *authorLabelCell;
 
-@property (weak, nonatomic) IBOutlet UIButton *replyButtonCell;
-@property (weak, nonatomic) IBOutlet UIButton *retweetButtonCell;
-@property (weak, nonatomic) IBOutlet UIButton *heartButtonCell;
-@property (weak, nonatomic) IBOutlet UIButton *messageButtonCell;
+
 @property (weak, nonatomic) IBOutlet UILabel *dateLabelCell;
 @property (strong, nonatomic) Tweet *tweet;
+
+
 @end

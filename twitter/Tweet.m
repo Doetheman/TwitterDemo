@@ -23,9 +23,9 @@
         }
         self.idStr = dictionary[@"id_str"];
         self.text = dictionary[@"text"];
-        self.favoriteCount = [dictionary[@"favorite_count"]boolValue];
+        self.favoriteCount = [dictionary[@"favourites_count"]intValue];
         self.favorited = [dictionary[@"favorited"]boolValue];
-        self.retweetCount = [dictionary[@"retweeted_count"]boolValue];
+        self.retweetCount = [dictionary[@"retweeted_count"]intValue];
         self.retweeted = [dictionary[@"retweeted"]boolValue];
         //intialize user
         NSDictionary *user = dictionary[@"user"];

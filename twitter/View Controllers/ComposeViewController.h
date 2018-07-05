@@ -20,6 +20,4 @@
 @property (weak, nonatomic) IBOutlet UIBarButtonItem *closeButton;
 @property (nonatomic, weak) id<ComposeViewControllerDelegate> delegate;
 
-
-
 @end
