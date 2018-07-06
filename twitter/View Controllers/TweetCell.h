@@ -14,9 +14,10 @@
 
 @property (weak, nonatomic) IBOutlet UILabel *screenName;
 
-@property (weak, nonatomic) IBOutlet UILabel *replyLabelCell;
+
 @property (weak, nonatomic) IBOutlet UILabel *retweetLabelCell;
 
+@property (weak, nonatomic) IBOutlet UILabel *timeLabel;
 
 @property (weak, nonatomic) IBOutlet UILabel *heartLabelCell;
 @property (weak, nonatomic) IBOutlet UILabel *tweetTextLabelCell;

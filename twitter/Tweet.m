@@ -7,6 +7,8 @@
 //
 #import "User.h"
 #import "Tweet.h"
+#import "DateTools.h"
+
 
 @implementation Tweet
 -(instancetype) initWithDictionary: (NSDictionary *)dictionary{
@@ -21,11 +23,12 @@
             //Change tweet to original
             dictionary = originalTweet;
         }
+       
         self.idStr = dictionary[@"id_str"];
         self.text = dictionary[@"text"];
-        self.favoriteCount = [dictionary[@"favourites_count"]intValue];
+        self.favoriteCount = [dictionary[@"favorite_count"]intValue];
         self.favorited = [dictionary[@"favorited"]boolValue];
-        self.retweetCount = [dictionary[@"retweeted_count"]intValue];
+        self.retweetCount = [dictionary[@"retweet_count"]intValue];
         self.retweeted = [dictionary[@"retweeted"]boolValue];
         //intialize user
         NSDictionary *user = dictionary[@"user"];
@@ -34,15 +37,18 @@
         NSString *createdAtOriginalString = dictionary [@"created_at"];
         NSDateFormatter * formatter= [[NSDateFormatter alloc]init];
         //Configure input formate to parse the date string
-        formatter.dateFormat= @"E MMM d HH: mm:ss Z y";
+        formatter.dateFormat= @"E MMM d HH:mm:ss Z y";
         //Convert string to date
         NSDate *date = [formatter dateFromString:createdAtOriginalString];
+        self.timeStamp= date.shortTimeAgoSinceNow;
         //Configure output format
         formatter.dateStyle = NSDateFormatterShortStyle;
         formatter.timeStyle = NSDateFormatterShortStyle;
         formatter.timeStyle = NSDateFormatterNoStyle;
         //Convert Date to String
         self.createdAtString = [formatter stringFromDate:date];
+
+       // self.timeStamp = minutesAgo
         
     }
     return self;

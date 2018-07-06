@@ -28,11 +28,12 @@
    // self.celIImage;
     self.authorLabelCell.text = tweet.user.name;
     self.tweetTextLabelCell.text = tweet.text;
-    self.replyLabelCell.text = tweet.idStr;
+    //self.replyLabelCell.text = tweet.idStr;
     self.screenName.text = tweet.user.screenName;
     self.dateLabelCell.text = tweet.createdAtString;
     self.retweetLabelCell.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
     self.heartLabelCell.text =[NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
+    self.timeLabel.text = tweet.timeStamp;
     [self.cellImage setImageWithURL: tweet.user.imageURL];
      self.cellImage.layer.cornerRadius = 50;
     self.cellImage.clipsToBounds = true;
@@ -104,7 +105,7 @@
     // self.celIImage;
     self.authorLabelCell.text = tweet.user.name;
     self.tweetTextLabelCell.text = tweet.text;
-    self.replyLabelCell.text = tweet.idStr;
+    //self.replyLabelCell.text = tweet.idStr;
     self.screenName.text = tweet.user.screenName;
     self.dateLabelCell.text = tweet.createdAtString;
     self.retweetLabelCell.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];

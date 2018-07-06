@@ -18,7 +18,8 @@
 @property (nonatomic) BOOL retweeted; //Configure button
 @property (strong, nonatomic) User *user; //Name, screenname, etc. of tweet author
 @property (strong, nonatomic) NSString *createdAtString; //Display
-@property (strong,nonatomic) User *retweetedByUser; //User who retweetedif retweeted
-+ (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries;
-- (instancetype)initWithDictionary:(NSDictionary *) dictionary;
+@property (strong,nonatomic) User *retweetedByUser; //User who retweeted
+@property (strong,nonatomic) NSString *timeStamp; //tweet timestamp
++ (NSMutableArray *)tweetsWithArray:(NSArray *)dictionaries; //Array for tweets
+- (instancetype)initWithDictionary:(NSDictionary *) dictionary; //Public dictionary
 @end
