@@ -41,11 +41,10 @@
     
     
 }
+//Action of retween button
 - (IBAction)didRetweet:(id)sender {
     // TODO: Update the local tweet model
     if (self.tweet.retweeted) {
-        self.tweet.retweeted = NO;
-        self.tweet.retweetCount -= 1;
         
         [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
@@ -53,11 +52,13 @@
             }
             else{
                 NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+                self.tweet.retweeted = NO;
+                self.tweet.retweetCount -= 1;
+                [self refreshData:self.tweet];
             }
         }];
     } else {
-            self.tweet.retweeted = YES;
-            self.tweet.retweetCount += 1;
+
             
             [[APIManager shared] unretweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
                 if(error){
@@ -65,35 +66,42 @@
                 }
                 else{
                     NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+                    self.tweet.retweeted = YES;
+                    self.tweet.retweetCount += 1;
+                    [self refreshData:self.tweet];
                 }
             }];
     }
  
 }
-
+//Action of heart button
 - (IBAction)didTapFavorite:(UIButton *)sender {
     if (self.tweet.favorited ) {
-        self.tweet.favorited = NO;
-        self.tweet.favoriteCount -= 1;
+       
        
         [[APIManager shared] unfavorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
+                
             }
             else{
                 NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+                self.tweet.favorited = NO;
+                self.tweet.favoriteCount -= 1;
+                [self refreshData:self.tweet];
             }
         }];
     } else {
-        self.tweet.favorited = YES;
-        self.tweet.favoriteCount += 1;
-        
+      
         [[APIManager shared] favorite:self.tweet completion:^(Tweet *tweet, NSError *error) {
             if(error){
                 NSLog(@"Error favoriting tweet: %@", error.localizedDescription);
             }
             else{
                 NSLog(@"Successfully favorited the following Tweet: %@", tweet.text);
+                self.tweet.favorited = YES;
+                self.tweet.favoriteCount += 1;
+                [self refreshData:self.tweet];
             }
         }];
     }

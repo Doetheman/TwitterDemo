@@ -10,6 +10,7 @@
 #import "TweetCell.h"
 #import "TimelineViewController.h"
 #import "APIManager.h"
+#import "TweetDetailViewController.h"
 #import <UIIMageView+AFNetworking.h>
 #import "AppDelegate.h"
 #import "LoginViewController.h"
@@ -71,8 +72,26 @@
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UINavigationController *navigationController = [segue destinationViewController];
-    ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
-    composeController.delegate = self;
+    //Check for different segues
+    if ([segue.identifier isEqualToString: @"compose"]) {
+        ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
+        composeController.delegate = self;
+    
+    } else {
+        //Creating controller object for segue
+        TweetDetailViewController *tweetDetail = (TweetDetailViewController*)[segue destinationViewController];
+        //Selected cell
+        UITableViewCell *tappedCell = sender;
+        //index for specific cell
+        NSIndexPath *indexPath = [self.tableView indexPathForCell:tappedCell];
+        //Index for tweet array
+        Tweet *selectedTweet = self.tweetsArray[indexPath.row];
+        //Setting tweet to selected view controler
+        tweetDetail.tweetDetail = selectedTweet;
+    }
+ 
+    
+    
 }
 
 

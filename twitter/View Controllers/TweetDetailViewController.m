@@ -5,10 +5,18 @@
 //  Created by Dorian Holmes on 7/5/18.
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
-
+#import "ComposeViewController.h"
+#import "Tweet.h"
+#import "TweetCell.h"
+#import "TimelineViewController.h"
+#import "APIManager.h"
+#import <UIIMageView+AFNetworking.h>
+#import "AppDelegate.h"
+#import "LoginViewController.h"
 #import "TweetDetailViewController.h"
 
-@interface TweetDetailViewController ()
+@interface TweetDetailViewController () 
+@property (weak, nonatomic) IBOutlet TweetCell *tweetCell;
 
 @end
 
@@ -16,13 +24,41 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+    [self updateCell];
 }
+
+-(void) updateCell{
+    self.tweetCell.tweet = self.tweetDetail;
+    
+}
+
+- (void) fetchTweet{
+    [[APIManager shared] getHomeTimelineWithCompletion:^(NSArray *tweets, NSError *error) {
+        if (tweets) {
+            
+
+            
+            
+            
+        } else{
+            
+            NSLog(@"😫😫😫 Error getting home timeline: %@", error.localizedDescription);
+            
+        }
+        
+    }];
+
+    
+    
+}
+
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+    
 }
+
 
 /*
 #pragma mark - Navigation
