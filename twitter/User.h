@@ -13,7 +13,12 @@
 @property (strong, nonatomic) NSString *name;
 @property (strong, nonatomic) NSString *screenName;
 @property (strong, nonatomic) NSURL *imageURL;
-
+@property (strong,nonatomic) NSString *descriptionOfProfile;
+@property (strong,nonatomic) NSURL *banner;
+@property (nonatomic) int followers;
+@property (nonatomic) int friends;
+@property (strong, nonatomic) NSString *iD;
+@property (strong, nonatomic) NSURL *profileImage;
 - (instancetype)initWithDictionary:(NSDictionary *) dictionary;
 
 @end

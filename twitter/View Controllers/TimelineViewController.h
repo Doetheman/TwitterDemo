@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface TimelineViewController : UIViewController
+//Tableview to show cells
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet Tweet *tweet;
 

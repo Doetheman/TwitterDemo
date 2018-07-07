@@ -5,6 +5,7 @@
 //  Created by emersonmalca on 5/28/18.
 //  Copyright © 2018 Emerson Malca. All rights reserved.
 //
+#import "ProfileViewController.h"
 #import "ComposeViewController.h"
 #import "Tweet.h"
 #import "TweetCell.h"
@@ -15,7 +16,7 @@
 #import "AppDelegate.h"
 #import "LoginViewController.h"
 
-@interface TimelineViewController ()  <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate>
+@interface TimelineViewController ()  <ComposeViewControllerDelegate, UITableViewDataSource, UITableViewDelegate, TweetCellDelegate>
 
 @property (strong, nonatomic) NSMutableArray *tweetsArray;
 @property (strong, nonatomic) UIRefreshControl *refreshControl;
@@ -34,9 +35,8 @@
     [self fetchTweets];
     self.refreshControl = [[UIRefreshControl alloc] init];
     [self.refreshControl addTarget:self action:@selector(fetchTweets) forControlEvents:UIControlEventValueChanged];
-    
     [self.tableView addSubview:self.refreshControl];
-    // Get timeline
+    //Size of tableview
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     
 
@@ -69,7 +69,7 @@
     // Dispose of any resources that can be recreated.
  
 }
-
+//Segue from one view controller to another
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UINavigationController *navigationController = [segue destinationViewController];
     //Check for different segues
@@ -77,7 +77,12 @@
         ComposeViewController *composeController = (ComposeViewController*)navigationController.topViewController;
         composeController.delegate = self;
     
-    } else {
+    }else if([segue.identifier isEqualToString:@"profileViewController"]){
+        ProfileViewController *profileViewController = (ProfileViewController*)[segue destinationViewController];
+        //index for specific cell
+        profileViewController.user = sender;
+        
+    } else{
         //Creating controller object for segue
         TweetDetailViewController *tweetDetail = (TweetDetailViewController*)[segue destinationViewController];
         //Selected cell
@@ -87,7 +92,7 @@
         //Index for tweet array
         Tweet *selectedTweet = self.tweetsArray[indexPath.row];
         //Setting tweet to selected view controler
-        tweetDetail.tweetDetail = selectedTweet;
+        tweetDetail.selectedTweetDetails = selectedTweet;
     }
  
     
@@ -95,19 +100,21 @@
 }
 
 
-
+//Puts tweets in cell
 - (UITableViewCell *)tableView:( UITableView *)tableView cellForRowAtIndexPath:( NSIndexPath *)indexPath {
     
     TweetCell *cell = [tableView dequeueReusableCellWithIdentifier:@"cell" forIndexPath:indexPath];
     Tweet *tweet = self.tweetsArray[indexPath.row];
     cell.tweet = tweet;
-    
+    cell.delegate = self;
     return cell;
     
     }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+    //Displays amount of tweets in console
     NSLog(@"%@", [NSString stringWithFormat:@"there are this many tweets %lu", self.tweetsArray.count]);
+    //Create number of rows based on tweets
         return self.tweetsArray.count;
 }
 //checks if tweet was successful
@@ -122,6 +129,7 @@
         }
     }];
 }
+//Logout user
 - (IBAction)logOut:(id)sender {
     AppDelegate *appDelegate = (AppDelegate *)[UIApplication sharedApplication].delegate;
     
@@ -130,6 +138,15 @@
     appDelegate.window.rootViewController = loginViewController;
     [[APIManager shared] logout];
 }
+
+//Transfers user information to profileViewController to dispay selected cell profile
+- (void)tweetCell:(TweetCell *)tweetCell didTap:(User *)user {
+    
+    [self performSegueWithIdentifier:@"profileViewController" sender:user];
+
+}
+
+
 
 @end
     

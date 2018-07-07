@@ -11,39 +11,48 @@
 #import "Tweet.h"
 #import <UIIMageView+AFNetworking.h>
 #import "APIManager.h"
-@implementation TweetCell
 
+
+@implementation TweetCell
 - (void)awakeFromNib {
     [super awakeFromNib];
+    UITapGestureRecognizer *userProfileTapAction = [[UITapGestureRecognizer alloc]initWithTarget:self action: @selector(userTapOnProfile:)];
+    [self.cellImage addGestureRecognizer:userProfileTapAction];
+    [self.cellImage setUserInteractionEnabled:YES];
 }
-
+// Configure the view for the selected state
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
 
 }
+- (void) userTapOnProfile: (UIGestureRecognizer *)sender{
+    [self.delegate tweetCell:self didTap:self.tweet.user];
+
+}
+
+//Set tweet objects from API resource
 - (void) setTweet:(Tweet *)tweet{
     _tweet = tweet;
    // self.celIImage;
-    self.authorLabelCell.text = tweet.user.name;
-    self.tweetTextLabelCell.text = tweet.text;
-    //self.replyLabelCell.text = tweet.idStr;
+    self.authorLabel.text = tweet.user.name;
+    self.tweetTextLabel.text = tweet.text;
+    //self.replyLabel.text = tweet.idStr;
     self.screenName.text = tweet.user.screenName;
-    self.dateLabelCell.text = tweet.createdAtString;
-    self.retweetLabelCell.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
-    self.heartLabelCell.text =[NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
+    self.dateLabel.text = tweet.createdAtString;
+    self.retweetLabel.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
+    self.heartLabel.text =[NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     self.timeLabel.text = tweet.timeStamp;
     [self.cellImage setImageWithURL: tweet.user.imageURL];
-     self.cellImage.layer.cornerRadius = 50;
+//Make image round
+     self.cellImage.layer.cornerRadius = 45;
     self.cellImage.clipsToBounds = true;
 
     
     
 }
-//Action of retween button
+//Action of retweet button
 - (IBAction)didRetweet:(id)sender {
-    // TODO: Update the local tweet model
     if (self.tweet.retweeted) {
         
         [[APIManager shared] retweet:self.tweet completion:^(Tweet *tweet, NSError *error) {
@@ -107,17 +116,17 @@
     }
    
 }
-
+// TODO: Update the local tweet model
 - (void)refreshData:(Tweet*)tweet{
     _tweet = tweet;
     // self.celIImage;
-    self.authorLabelCell.text = tweet.user.name;
-    self.tweetTextLabelCell.text = tweet.text;
+    self.authorLabel.text = tweet.user.name;
+    self.tweetTextLabel.text = tweet.text;
     //self.replyLabelCell.text = tweet.idStr;
     self.screenName.text = tweet.user.screenName;
-    self.dateLabelCell.text = tweet.createdAtString;
-    self.retweetLabelCell.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
-    self.heartLabelCell.text =[NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
+    self.dateLabel.text = tweet.createdAtString;
+    self.retweetLabel.text = [NSString stringWithFormat:@"%i", self.tweet.retweetCount];
+    self.heartLabel.text =[NSString stringWithFormat:@"%i", self.tweet.favoriteCount];
     [self.cellImage setImageWithURL: tweet.user.imageURL];
     self.cellImage.layer.cornerRadius = self.cellImage.frame.size.width / 2;
 

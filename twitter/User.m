@@ -15,6 +15,15 @@
         self.name = dictionary[@"name"];
         self.screenName = dictionary[@"screen_name"];
         self.imageURL = [NSURL URLWithString:dictionary[@"profile_image_url_https"]];
+        self.descriptionOfProfile = dictionary[@"description"];
+        self.profileImage = [NSURL URLWithString: dictionary[@"profile_image_url"]];
+        self.iD = dictionary[@"user_id"];
+        self.banner = [NSURL URLWithString:dictionary[@"profile_banner_url"]];
+        self.followers = dictionary[@"followers_count"];
+        self.friends = dictionary[@"friends_count"];
+        
+        
+    
     }
     return self;
 }

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface TweetDetailViewController : UIViewController
-@property (strong, nonatomic)  Tweet *tweetDetail;
+@property (strong, nonatomic)  Tweet *selectedTweetDetails;
 
 @end

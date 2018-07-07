@@ -28,7 +28,7 @@
 }
 
 -(void) updateCell{
-    self.tweetCell.tweet = self.tweetDetail;
+    self.tweetCell.tweet = self.selectedTweetDetails;
     
 }
 
